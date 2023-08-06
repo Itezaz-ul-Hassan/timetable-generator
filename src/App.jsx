@@ -197,13 +197,21 @@ function App() {
     }
   }
 
+  function printTable(timetable) {
+    setGeneratedTables((item) => {
+      const data = [...item, deepCopy2DArray(timetable.slice())].map(deepCopy);
+      return [...data]
+    });
+  }
+
   const GenerateTable = (Filtered, Depth, TimeTable) => {
     if (Depth == Filtered.length) {
-      setGeneratedTables((item) => {
-        console.log('inside', item);
-        const data = [...item, deepCopy2DArray(TimeTable.slice())].map(deepCopy);
-        return [...data]
-      });
+      // setGeneratedTables((item) => {
+      //   console.log('inside', item, TimeTable.slice());
+      //   const data = [...item, deepCopy2DArray(TimeTable.slice())].map(deepCopy);
+      //   return [...data]
+      // });
+      printTable(deepCopy2DArray(TimeTable.slice()));
       return;
     }
     for (let i = 0; i < Filtered[Depth].length; i++) {
