@@ -7,14 +7,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
 import { styled } from '@mui/material/styles';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
-    minWidth: 10,
     whiteSpace: 'nowrap',
     fontWeight: 'bold',
   },
@@ -38,17 +36,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 
-const Timetable = ({state}) => {
+const GeneratedTimetable = ({ state }) => {
   const times = ['', '8.30-10.00', '10.00-11.30', '11.30-1.00', '1.00-2.30', '2.30-4.00', '4.00-5.30', '5.30-7.00', '7.00-8.30'];
-  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Select Column'];
+  const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   return (
-    <TableContainer component={Paper} sx={{ minWidth: 1050 }}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableContainer component={Paper} sx={{ minWidth: 800 }}>
+      <Table sx={{ minWidth: 600 }} aria-label="simple table">
       <TableHead>
           <StyledTableRow>
             {times.map((time) => <StyledTableCell key={time}>{time}</StyledTableCell>)}
-            <StyledTableCell>Select Row</StyledTableCell>
           </StyledTableRow>
         </TableHead>
         <TableBody>
@@ -59,11 +56,7 @@ const Timetable = ({state}) => {
                {times.map((time, j) => {
                  return (
                   <StyledTableCell>
-                    <Checkbox
-                      checked={state[Number(i)][Number(j)]}
-                      // onChange={handleChange}
-                      inputProps={{ 'aria-label': 'controlled' }}
-                    />
+                    {state[i][j]}
                   </StyledTableCell>
                  )
                })}
@@ -76,8 +69,8 @@ const Timetable = ({state}) => {
   );
 };
 
-Timetable.propTypes = {
+GeneratedTimetable.propTypes = {
   state: PropTypes.array.isRequired,
 };
 
-export default Timetable;
+export default GeneratedTimetable;
