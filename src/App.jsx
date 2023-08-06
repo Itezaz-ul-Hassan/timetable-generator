@@ -4,6 +4,7 @@ import { Grid } from '@mui/material';
 import TimetableGenerator from './containers/TimetableGenerator'
 import CourseDropdown from './components/CourseDropdown';
 import GeneratedTimetable from './components/GeneratedTimeTable';
+import Details from './components/Details';
 
 import Courses from './core/utils/data';
 
@@ -196,6 +197,9 @@ function App() {
 
   return (
     <Box sx={{ flexGrow: 1, overflow: 'hidden', px: 30 }}>
+      <Grid container direction="column" justifyContent="center" rowGap={2} alignItems="center" sx={{ marginBottom: 3 }}>
+        <Details />
+      </Grid>
       <Grid
         container
         spacing={{ xs: 2, md: 12 }}
