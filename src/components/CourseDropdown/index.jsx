@@ -7,8 +7,7 @@ import Select from '@mui/material/Select';
 import { Typography } from '@mui/material';
 
 
-const CourseDropdown = ({ id, onChangeHandler, options }) => {
-  const [age, setAge] = useState('');
+const CourseDropdown = ({ setRecentlyChangedCourse, courses, id, onChangeHandler, options }) => {
   return (
     <div>
       <Typography variant="h6">Course {id}</Typography>
@@ -20,8 +19,11 @@ const CourseDropdown = ({ id, onChangeHandler, options }) => {
         <Select
             labelId="demo-simple-select-autowidth-label"
             id="demo-simple-select-autowidth"
-            value={age}
-            onChange={(event) => setAge(event.target.value)}
+            value={courses[id-1] ?? ""}
+            onChange={(event) => {
+              onChangeHandler((prevCourses) => [...prevCourses, event.target.value]);
+              setRecentlyChangedCourse(event.target.value);
+            }}
             autoWidth
             label="Please select a course"
           >
@@ -41,6 +43,8 @@ const CourseDropdown = ({ id, onChangeHandler, options }) => {
 };
 
 CourseDropdown.propTypes = {
+  setRecentlyChangedCourse: PropTypes.func.isRequired,
+  courses: PropTypes.array.isRequired,
   id: PropTypes.number.isRequired,
   onChangeHandler: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,
