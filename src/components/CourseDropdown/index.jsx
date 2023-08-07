@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -11,7 +11,6 @@ const CourseDropdown = ({ setRecentlyChangedCourse, courses, id, onChangeHandler
   return (
     <div>
       <Typography variant="h6">Course {id}</Typography>
-      {/* <select onChange={onChangeHandler}> */}
       <FormControl sx={{ m: 1, minWidth: 380 }}>
         <InputLabel id="demo-simple-select-autowidth-label">
           <Typography variant="caption">Please select a course</Typography>
@@ -27,7 +26,6 @@ const CourseDropdown = ({ setRecentlyChangedCourse, courses, id, onChangeHandler
             autoWidth
             label="Please select a course"
           >
-          {/* <option value="Please select a course" selected>Please select a course</option> */}
             {options.map((option) => {
               return (
                 <MenuItem value={option}>
@@ -37,7 +35,6 @@ const CourseDropdown = ({ setRecentlyChangedCourse, courses, id, onChangeHandler
             })}
         </Select>
       </FormControl>
-      {/* </select> */}
     </div>
   );
 };

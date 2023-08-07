@@ -19,30 +19,6 @@ function App() {
   const [generatedTables, setGeneratedTables] = useState([]);
   const [recentlyChangedCourse, setRecentlyChangedCourse] = useState('');
 
-  // useEffect(() => {
-  //   const addSections = (courseName) => {
-  //     let prev = '';
-  //     const updatedSelectedSections = [...selectedSections];
-
-  //     Courses.forEach((period) => {
-  //       const [course, section] = period;
-  //       if (course === courseName && section !== prev) {
-  //         const index = selectedCourses.indexOf(courseName);
-  //         if (selectedSections[index] === undefined) {
-  //           updatedSelectedSections[index] = [];
-  //         }
-  //         updatedSelectedSections[index].push(section);
-  //         prev = section;
-  //       }
-  //     });
-
-  //     setSelectedSections(updatedSelectedSections);
-  //   };
-  //   if (recentlyChangedCourse) {
-  //     addSections(recentlyChangedCourse);
-  //   }
-  // }, [recentlyChangedCourse, selectedCourses]);  
-
   const addSections = useCallback((courseName) => {
     let prev = '';
     const updatedSelectedSections = selectedSections.slice();
@@ -67,26 +43,6 @@ function App() {
       addSections(recentlyChangedCourse);
     }
   }, [recentlyChangedCourse, addSections]);
-
-  // console.log('selectedsection', selectedSections);
-  // console.log('timetables', generatedTables);
-  // console.log('error', error);
-
-  // function addSections(courseName) {
-  //   let prev = "";
-  //   Courses.forEach(period => {
-  //     let section = period[1];
-  //     if (period[0] == courseName && section != prev) {
-  //       const index = selectedCourses.indexOf(courseName);
-  //       if (selectedSections[index] == undefined) {
-  //         setSelectedSections([...selectedSections, []]);
-  //       }
-  //       selectedSections[index].push(section);
-  //       setSelectedSections(selectedSections);
-  //       prev = section;
-  //     }
-  //   });
-  // }
 
   function SameCourses(c1, c2) {
     return c1.includes(c2) || c2.includes(c1);
@@ -197,13 +153,16 @@ function App() {
     }
   }
 
+  function printTable(timetable) {
+    setGeneratedTables((item) => {
+      const data = [...item, deepCopy2DArray(timetable.slice())].map(deepCopy);
+      return [...data]
+    });
+  }
+
   const GenerateTable = (Filtered, Depth, TimeTable) => {
     if (Depth == Filtered.length) {
-      setGeneratedTables((item) => {
-        console.log('inside', item);
-        const data = [...item, deepCopy2DArray(TimeTable.slice())].map(deepCopy);
-        return [...data]
-      });
+      printTable(deepCopy2DArray(TimeTable.slice()));
       return;
     }
     for (let i = 0; i < Filtered[Depth].length; i++) {
@@ -234,44 +193,6 @@ function App() {
       }
     }
   }
-
-  // function generateTimetable(filtered, depth, timetable) {
-  //   if (depth == filtered.length) {
-  //     setGeneratedTables((generatedTables) => [...generatedTables, timetable]);
-  //     return;
-  //   }
-  //   for (let i = 0; i < filtered[depth].length; i++) {
-  //     let clash = false;
-  //     for (let j = 0; j < filtered[depth][i].length; j++) {
-  //       let stime = Math.floor(parseInt(filtered[depth][i][j][2]) / 90);
-  //       let etime = Math.ceil(parseInt(filtered[depth][i][j][3]) / 90);
-  //       for (let k = stime; k < etime; k++) {
-  //         if (timetable[parseInt(filtered[depth][i][j][4])][k] == "-") {
-  //           console.log("isnsdscddcs", filtered[depth][i][j][0] + "\n" + filtered[depth][i][j][1] + "\n" + filtered[depth][i][j][5]);
-  //           timetable[parseInt(filtered[depth][i][j][4])][k] = filtered[depth][i][j][0] + "\n" + filtered[depth][i][j][1] + "\n" + filtered[depth][i][j][5];
-  //           console.log(timetable[parseInt(filtered[depth][i][j][4])][k]);
-  //         }
-  //         else {
-  //           clash = true;
-  //         }
-  //       }
-  //     }
-  //     if (clash == false) {
-  //       generateTimetable(filtered, depth + 1, timetable);
-  //     }
-  //     for (let j = 0; j < filtered[depth][i].length; j++) {
-  //       let stime = Math.floor(parseInt(filtered[depth][i][j][2]) / 90);
-  //       let etime = Math.ceil(parseInt(filtered[depth][i][j][3]) / 90);
-  //       for (let k = stime; k < etime; k++) {
-  //         if (timetable[parseInt(filtered[depth][i][j][4])][k] == filtered[depth][i][j][0] + "\n" + filtered[depth][i][j][1] + "\n" + filtered[depth][i][j][5]) {
-  //           timetable[parseInt(filtered[depth][i][j][4])][k] = "-";
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-
-  console.log('hogja', generatedTables);
 
   return (
     <Box sx={{ flexGrow: 1, overflow: 'hidden', px: 30 }}>
@@ -309,8 +230,8 @@ function App() {
         <TimetableGenerator selectedTime={selectedTime} onSubmit={generateTable} />
       </Grid>
       <Grid container justifyContent="center" alignItems="center" sx={{ marginTop: 3 }}>
-        {generatedTables.map((table) => (
-          <Grid container sx={{ marginTop: 3 }}>
+        {generatedTables.slice(0, generatedTables.length/selectedCourses.length).map((table) => (
+          <Grid container sx={{ marginTop: 3, marginBottom: 3 }}>
             <GeneratedTimetable state={table} />
           </Grid>
         ))}
