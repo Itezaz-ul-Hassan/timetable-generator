@@ -5,6 +5,7 @@ import TimetableGenerator from './containers/TimetableGenerator'
 import CourseDropdown from './components/CourseDropdown';
 import GeneratedTimetable from './components/GeneratedTimeTable';
 import Details from './components/Details';
+import Section from './components/Section';
 
 import Courses from './core/utils/data';
 
@@ -23,6 +24,8 @@ function App() {
   const addSections = useCallback((courseName) => {
     let prev = '';
     const updatedSelectedSections = selectedSections.slice();
+    const index = selectedCourses.indexOf(courseName)
+    updatedSelectedSections[index] = [];
 
     Courses.forEach((period) => {
       const [course, section] = period;
@@ -217,20 +220,29 @@ function App() {
             }
           }).filter((item) => item != undefined);
           return (
-            <Grid item xs={12} sm={10} md={8} lg={6} xl={3}>
-              <CourseDropdown
-                courses={selectedCourses}
-                key={item}
-                id={item}
-                onChangeHandler={setSelectedCourses}
-                options={options}
-                setRecentlyChangedCourse={setRecentlyChangedCourse}
-              />
-            </Grid>
+            <>
+              <Grid item xs={12} sm={10} md={8} lg={6} xl={3}>
+                <Grid sx={{ maxHeight: 100 }}>
+                  <CourseDropdown
+                    courses={selectedCourses}
+                    key={item}
+                    id={item}
+                    onChangeHandler={setSelectedCourses}
+                    options={options}
+                    setRecentlyChangedCourse={setRecentlyChangedCourse}
+                  />
+                  <Grid item container direction="row">
+                    {selectedSections[item-1] && selectedSections[item-1].map((item, index) => (
+                      <Section key={index} section={item} />
+                    ))}
+                  </Grid>
+                </Grid>
+              </Grid>
+            </>
           )
         })}
       </Grid>
-      <Grid container justifyContent="center" alignItems="center" sx={{ marginTop: 3 }}>
+      <Grid container justifyContent="center" alignItems="center" sx={{ marginTop: 20 }}>
         <TimetableGenerator selectedTime={selectedTime} onSubmit={generateTable} />
       </Grid>
       <Grid container justifyContent="center" alignItems="center" sx={{ marginTop: 3 }}>
