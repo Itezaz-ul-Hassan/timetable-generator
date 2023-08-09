@@ -5,11 +5,19 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 
+const CourseDropdown = ({ setRecentlyChangedCourse, courses, id, onChangeHandler, options, selectedSections }) => {
+  const gridStyle = {
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    maxHeight: "150px",
+    paddingBottom: "0px",
+  };
 
-const CourseDropdown = ({ setRecentlyChangedCourse, courses, id, onChangeHandler, options }) => {
   return (
-    <div>
+    <Grid item>
       <Typography variant="h6">Course {id}</Typography>
       <FormControl sx={{ m: 1, minWidth: 380 }}>
         <InputLabel id="demo-simple-select-autowidth-label">
@@ -20,8 +28,13 @@ const CourseDropdown = ({ setRecentlyChangedCourse, courses, id, onChangeHandler
             id="demo-simple-select-autowidth"
             value={courses[id-1] ?? ""}
             onChange={(event) => {
-              onChangeHandler((prevCourses) => [...prevCourses, event.target.value]);
+              onChangeHandler((prevCourses) => {
+                const newData = prevCourses.slice();
+                newData[id-1] = event.target.value;
+                return newData;
+              });
               setRecentlyChangedCourse(event.target.value);
+              
             }}
             autoWidth
             label="Please select a course"
@@ -35,13 +48,14 @@ const CourseDropdown = ({ setRecentlyChangedCourse, courses, id, onChangeHandler
             })}
         </Select>
       </FormControl>
-    </div>
+    </Grid>
   );
 };
 
 CourseDropdown.propTypes = {
   setRecentlyChangedCourse: PropTypes.func.isRequired,
   courses: PropTypes.array.isRequired,
+  selectedSections: PropTypes.array.isRequired,
   id: PropTypes.number.isRequired,
   onChangeHandler: PropTypes.func.isRequired,
   options: PropTypes.array.isRequired,

@@ -43,6 +43,7 @@ const GeneratedTimetable = ({ state }) => {
       <TableHead>
           <StyledTableRow>
             {times.map((time) => <StyledTableCell key={time}>{time}</StyledTableCell>)}
+            <StyledTableCell />
           </StyledTableRow>
         </TableHead>
         <TableBody>
