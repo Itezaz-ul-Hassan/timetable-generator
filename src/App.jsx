@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import { Grid } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
 import TimetableGenerator from './containers/TimetableGenerator'
 import CourseDropdown from './components/CourseDropdown';
 import GeneratedTimetable from './components/GeneratedTimeTable';
@@ -8,6 +9,7 @@ import Details from './components/Details';
 import Section from './components/Section';
 
 import Courses from './core/utils/data';
+import { Typography } from '@mui/material';
 
 function App() {
   const [selectedTime, setSelectedTime] = useState(
@@ -20,27 +22,31 @@ function App() {
   const [error, setError] = useState('');
   const [generatedTables, setGeneratedTables] = useState([]);
   const [recentlyChangedCourse, setRecentlyChangedCourse] = useState('');
+  const [selectAllSections, setSelectAllSections] = useState(true);
 
   const addSections = useCallback((courseName) => {
     let prev = '';
     const updatedSelectedSections = selectedSections.slice();
     const index = selectedCourses.indexOf(courseName)
+    if (index === -1) return;
     updatedSelectedSections[index] = [];
 
-    Courses.forEach((period) => {
-      const [course, section] = period;
-      if (course === courseName && section !== prev) {
-        const index = selectedCourses.indexOf(courseName);
-        if (updatedSelectedSections[index] === undefined) {
-          updatedSelectedSections[index] = [];
+    if(selectAllSections) {
+      Courses.forEach((period) => {
+        const [course, section] = period;
+        if (course === courseName && section !== prev) {
+          const index = selectedCourses.indexOf(courseName);
+          if (updatedSelectedSections[index] === undefined) {
+            updatedSelectedSections[index] = [];
+          }
+          updatedSelectedSections[index].push(section);
+          prev = section;
         }
-        updatedSelectedSections[index].push(section);
-        prev = section;
-      }
-    });
+      });
+    }
 
     setSelectedSections(updatedSelectedSections);
-  }, [selectedCourses, setSelectedSections]);
+  }, [selectedCourses, setSelectedSections, selectAllSections]);
 
   useEffect(() => {
     if (recentlyChangedCourse) {
@@ -203,6 +209,14 @@ function App() {
       <Grid container direction="column" justifyContent="center" rowGap={2} alignItems="center" sx={{ marginBottom: 3 }}>
         <Details />
       </Grid>
+      <Grid container direction="row" justifyContent="center" alignItems="center" sx={{ marginBottom: 3 }}>
+        <Checkbox
+          checked={selectAllSections}
+          onChange={() => setSelectAllSections((prev) => !prev)}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        <Typography>Select all sections by default?</Typography>
+      </Grid>
       <Grid
         container
         spacing={{ xs: 2, md: 12 }}
@@ -246,6 +260,7 @@ function App() {
         <TimetableGenerator selectedTime={selectedTime} handleChange={setSelectedTime} onSubmit={generateTable} />
       </Grid>
       <Grid container justifyContent="center" alignItems="center" sx={{ marginTop: 3 }}>
+        {error && <Typography sx={{ marginTop: 3, color: "red" }}>{error}</Typography>}
         {generatedTables.slice(0, generatedTables.length/selectedCourses.length).map((table) => (
           <Grid container sx={{ marginTop: 3, marginBottom: 3 }}>
             <GeneratedTimetable state={table} />
