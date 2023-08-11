@@ -243,7 +243,7 @@ function App() {
         })}
       </Grid>
       <Grid container justifyContent="center" alignItems="center" sx={{ marginTop: 20 }}>
-        <TimetableGenerator selectedTime={selectedTime} onSubmit={generateTable} />
+        <TimetableGenerator selectedTime={selectedTime} handleChange={setSelectedTime} onSubmit={generateTable} />
       </Grid>
       <Grid container justifyContent="center" alignItems="center" sx={{ marginTop: 3 }}>
         {generatedTables.slice(0, generatedTables.length/selectedCourses.length).map((table) => (
