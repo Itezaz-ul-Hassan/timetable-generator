@@ -4,10 +4,20 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
-const Section = ({section}) => {
-  const [checked, setChecked] = useState(true);
+const Section = ({ section, selected, selectedSections, index, handleChange }) => {
+  const [checked, setChecked] = useState(selected);
 
-  const handleChange = (event) => {
+  const onChangeHandler = (event) => {
+    const newData = selectedSections.slice();
+    if(event.target.checked) {
+      newData[index].push(event.target.name);
+    } else {
+      const index = newData[index].indexOf(event.target.name);
+      if (index > -1) {
+        newData[index].splice(index, 1);
+      }
+    }
+    handleChange([...newData]);
     setChecked(event.target.checked);
   };
 
@@ -16,7 +26,7 @@ const Section = ({section}) => {
       <FormControlLabel control={
         <Checkbox
           checked={checked}
-          onChange={handleChange}
+          onChange={onChangeHandler}
           name={section}
           inputProps={{ 'aria-label': 'controlled' }}
         />
@@ -27,6 +37,10 @@ const Section = ({section}) => {
 
 Section.propTypes = {
   section: PropTypes.string.isRequired,
+  selected: PropTypes.bool.isRequired,
+  selectedSections: PropTypes.array.isRequired,
+  index: PropTypes.number.isRequired,
+  handleChange: PropTypes.func.isRequired,
 };
 
 export default Section;
