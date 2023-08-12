@@ -208,7 +208,7 @@ function App() {
   console.log('selected Sections', selectedSections);
 
   return (
-    <Box sx={{ flexGrow: 1, overflow: 'hidden', px: 30 }}>
+    <Box sx={{ flexGrow: 1, overflow: 'hidden', px: 30, '@media (max-width: 600px)': { px: 1 }, }}>
       <Grid container direction="column" justifyContent="center" rowGap={2} alignItems="center" sx={{ marginBottom: 3 }}>
         <Details />
       </Grid>
@@ -239,7 +239,7 @@ function App() {
           return (
             <>
               <Grid item xs={12} sm={10} md={8} lg={6} xl={3}>
-                <Grid sx={{ maxHeight: 100 }}>
+                <Grid sx={{ '@media (min-width: 1024px)': { maxHeight: 100 } }}>
                   <CourseDropdown
                     courses={selectedCourses}
                     key={item}

@@ -38,8 +38,8 @@ const GeneratedTimetable = ({ state }) => {
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   return (
-    <TableContainer component={Paper} sx={{ minWidth: 800 }}>
-      <Table sx={{ minWidth: 600 }} aria-label="simple table">
+    <TableContainer component={Paper} sx={{ minWidth: '65vw' }}>
+      <Table sx={{ minWidth: '40vw' }} aria-label="simple table">
       <TableHead>
           <StyledTableRow>
             {times.map((time) => <StyledTableCell key={time}>{time}</StyledTableCell>)}
