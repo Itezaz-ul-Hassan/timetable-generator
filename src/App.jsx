@@ -27,7 +27,7 @@ function App() {
 
   const addSections = useCallback((courseName) => {
     let prev = '';
-    const updatedSelectedSections = selectedSections.slice();
+    const updatedSelectedSections = allSections.slice();
     const index = selectedCourses.indexOf(courseName)
     if (index === -1) return;
     updatedSelectedSections[index] = [];
@@ -205,7 +205,6 @@ function App() {
       }
     }
   }
-  console.log('selected Sections', selectedSections);
 
   return (
     <Box sx={{ flexGrow: 1, overflow: 'hidden', px: 30, '@media (max-width: 600px)': { px: 1 }, }}>
