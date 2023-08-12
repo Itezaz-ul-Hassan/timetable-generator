@@ -40,8 +40,8 @@ const Timetable = ({ state, handleChange }) => {
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Select Column'];
 
   return (
-    <TableContainer component={Paper} sx={{ minWidth: 1050 }}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableContainer component={Paper} sx={{ minWidth: '80vw' }}>
+      <Table sx={{ minWidth: '40vw' }} aria-label="simple table">
       <TableHead>
           <StyledTableRow>
             {times.map((time) => <StyledTableCell key={time}>{time}</StyledTableCell>)}
