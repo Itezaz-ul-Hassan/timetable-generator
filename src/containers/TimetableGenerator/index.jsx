@@ -6,10 +6,10 @@ import { Grid } from '@mui/material';
 import Timetable from "../../components/Timetable";
 
 
-const TimetableGenerator = ({ onSubmit, selectedTime }) => {
+const TimetableGenerator = ({ onSubmit, selectedTime, handleChange }) => {
   return (
     <>
-      <Timetable state={selectedTime} />
+      <Timetable state={selectedTime} handleChange={handleChange} />
       <Grid container justifyContent="center" alignItems="center" sx={{ marginTop: 3 }}>
         <Button variant="contained" onClick={onSubmit}>Generate</Button>
       </Grid>
@@ -19,6 +19,7 @@ const TimetableGenerator = ({ onSubmit, selectedTime }) => {
 
 TimetableGenerator.propTypes = {
   onSubmit: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
   selectedTime: PropTypes.array.isRequired,
 };
 

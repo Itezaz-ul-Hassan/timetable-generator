@@ -35,7 +35,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 
-const Timetable = ({state}) => {
+const Timetable = ({ state, handleChange }) => {
   const times = ['', '8.30-10.00', '10.00-11.30', '11.30-1.00', '1.00-2.30', '2.30-4.00', '4.00-5.30', '5.30-7.00', '7.00-8.30'];
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Select Column'];
 
@@ -58,7 +58,23 @@ const Timetable = ({state}) => {
                   <StyledTableCell>
                     <Checkbox
                       checked={state[Number(i)][Number(j)]}
-                      // onChange={handleChange}
+                      onChange={(e) => {
+                        const newData = state.slice();
+                        if (Number(i) === state.length - 1) {
+                          for (let k = 0; k <= state.length - 1; k++) {
+                            newData[k][Number(j)] = Boolean(e.target.checked);
+                          }
+                          handleChange([...newData]);
+                        } else if(Number(j) === state[0].length - 1) {
+                          for (let k = 0; k <= state[0].length - 1; k++) {
+                            newData[Number(i)][k] = Boolean(e.target.checked);
+                          }
+                          handleChange([...newData]);
+                        } else {
+                          newData[Number(i)][Number(j)] = Boolean(e.target.checked);
+                          handleChange([...newData]);
+                        }
+                      }}
                       inputProps={{ 'aria-label': 'controlled' }}
                     />
                   </StyledTableCell>
@@ -75,6 +91,7 @@ const Timetable = ({state}) => {
 
 Timetable.propTypes = {
   state: PropTypes.array.isRequired,
+  handleChange: PropTypes.func.isRequired,
 };
 
 export default Timetable;
