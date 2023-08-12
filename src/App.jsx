@@ -19,6 +19,7 @@ function App() {
   const [selectedCourses, setSelectedCourses] = useState([]);
 
   const [selectedSections, setSelectedSections] = useState([[], [], [], [], []]);
+  const [allSections, setAllSections] = useState([[], [], [], [], []]);
   const [error, setError] = useState('');
   const [generatedTables, setGeneratedTables] = useState([]);
   const [recentlyChangedCourse, setRecentlyChangedCourse] = useState('');
@@ -31,22 +32,23 @@ function App() {
     if (index === -1) return;
     updatedSelectedSections[index] = [];
 
-    if(selectAllSections) {
-      Courses.forEach((period) => {
-        const [course, section] = period;
-        if (course === courseName && section !== prev) {
-          const index = selectedCourses.indexOf(courseName);
-          if (updatedSelectedSections[index] === undefined) {
-            updatedSelectedSections[index] = [];
-          }
-          updatedSelectedSections[index].push(section);
-          prev = section;
+    Courses.forEach((period) => {
+      const [course, section] = period;
+      if (course === courseName && section !== prev) {
+        const index = selectedCourses.indexOf(courseName);
+        if (updatedSelectedSections[index] === undefined) {
+          updatedSelectedSections[index] = [];
         }
-      });
+        updatedSelectedSections[index].push(section);
+        prev = section;
+      }
+    });
+    if (selectAllSections) {
+      setSelectedSections(updatedSelectedSections);
     }
+    setAllSections(updatedSelectedSections);
 
-    setSelectedSections(updatedSelectedSections);
-  }, [selectedCourses, setSelectedSections, selectAllSections]);
+  }, [selectedCourses, setSelectedSections, selectAllSections, setAllSections]);
 
   useEffect(() => {
     if (recentlyChangedCourse) {
@@ -203,6 +205,7 @@ function App() {
       }
     }
   }
+  console.log('selected Sections', selectedSections);
 
   return (
     <Box sx={{ flexGrow: 1, overflow: 'hidden', px: 30 }}>
@@ -246,8 +249,15 @@ function App() {
                     setRecentlyChangedCourse={setRecentlyChangedCourse}
                   />
                   <Grid item container direction="row">
-                    {selectedSections[item-1] && selectedSections[item-1].map((item, index) => (
-                      <Section key={index} section={item} />
+                    {allSections[item-1] && allSections[item-1].map((section, index) => (
+                      <Section
+                        key={index}
+                        section={section}
+                        selected={selectAllSections}
+                        selectedSections={selectedSections}
+                        handleChange={setSelectedSections}
+                        index={item-1}
+                      />
                     ))}
                   </Grid>
                 </Grid>
