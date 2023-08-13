@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@mui/material/Button';
-import { Grid } from '@mui/material';
 
+import { Button, Grid } from '../../components/MaterialUI';
 import Timetable from "../../components/Timetable";
 
 
