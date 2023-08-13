@@ -1,14 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import { styled } from '@mui/material/styles';
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  tableCellClasses,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Checkbox,
+  styled,
+} from '../../components/MaterialUI';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -42,7 +46,7 @@ const Timetable = ({ state, handleChange }) => {
   return (
     <TableContainer component={Paper} sx={{ minWidth: '80vw' }}>
       <Table sx={{ minWidth: '40vw' }} aria-label="simple table">
-      <TableHead>
+        <TableHead>
           <StyledTableRow>
             {times.map((time) => <StyledTableCell key={time}>{time}</StyledTableCell>)}
             <StyledTableCell>Select Row</StyledTableCell>
@@ -50,39 +54,39 @@ const Timetable = ({ state, handleChange }) => {
         </TableHead>
         <TableBody>
           {days.map((day, i) => {
-           return (
-             <StyledTableRow key={day} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-               <StyledTableCell component="th" scope="row">{day}</StyledTableCell>
-               {times.map((time, j) => {
-                 return (
-                  <StyledTableCell>
-                    <Checkbox
-                      checked={state[Number(i)][Number(j)]}
-                      onChange={(e) => {
-                        const newData = state.slice();
-                        if (Number(i) === state.length - 1) {
-                          for (let k = 0; k <= state.length - 1; k++) {
-                            newData[k][Number(j)] = Boolean(e.target.checked);
+            return (
+              <StyledTableRow key={day} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <StyledTableCell component="th" scope="row">{day}</StyledTableCell>
+                {times.map((time, j) => {
+                  return (
+                    <StyledTableCell key={j}>
+                      <Checkbox
+                        checked={state[Number(i)][Number(j)]}
+                        onChange={(e) => {
+                          const newData = state.slice();
+                          if (Number(i) === state.length - 1) {
+                            for (let k = 0; k <= state.length - 1; k++) {
+                              newData[k][Number(j)] = Boolean(e.target.checked);
+                            }
+                            handleChange([...newData]);
+                          } else if (Number(j) === state[0].length - 1) {
+                            for (let k = 0; k <= state[0].length - 1; k++) {
+                              newData[Number(i)][k] = Boolean(e.target.checked);
+                            }
+                            handleChange([...newData]);
+                          } else {
+                            newData[Number(i)][Number(j)] = Boolean(e.target.checked);
+                            handleChange([...newData]);
                           }
-                          handleChange([...newData]);
-                        } else if(Number(j) === state[0].length - 1) {
-                          for (let k = 0; k <= state[0].length - 1; k++) {
-                            newData[Number(i)][k] = Boolean(e.target.checked);
-                          }
-                          handleChange([...newData]);
-                        } else {
-                          newData[Number(i)][Number(j)] = Boolean(e.target.checked);
-                          handleChange([...newData]);
-                        }
-                      }}
-                      inputProps={{ 'aria-label': 'controlled' }}
-                    />
-                  </StyledTableCell>
-                 )
-               })}
-             </StyledTableRow>
-           )
-         })}
+                        }}
+                        inputProps={{ 'aria-label': 'controlled' }}
+                      />
+                    </StyledTableCell>
+                  )
+                })}
+              </StyledTableRow>
+            )
+          })}
         </TableBody>
       </Table>
     </TableContainer>

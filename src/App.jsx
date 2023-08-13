@@ -1,15 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
-import Box from '@mui/material/Box';
-import { Grid } from '@mui/material';
-import Checkbox from '@mui/material/Checkbox';
+
 import TimetableGenerator from './containers/TimetableGenerator'
 import CourseDropdown from './components/CourseDropdown';
 import GeneratedTimetable from './components/GeneratedTimeTable';
 import Details from './components/Details';
 import Section from './components/Section';
+import { 
+  Box,
+  Grid,
+  Checkbox,
+  Typography,
+} from './components/MaterialUI';
 
 import Courses from './core/utils/data';
-import { Typography } from '@mui/material';
 
 function App() {
   const [selectedTime, setSelectedTime] = useState(
@@ -226,7 +229,7 @@ function App() {
         justifyContent="space-evenly"
         alignItems="center"
       >
-        {[1, 2, 3, 4, 5].map((item) => {
+        {[1, 2, 3, 4, 5].map((item, id) => {
           let prev = "";
           const options = Courses.map((course) => {
             const name = course[0];
@@ -236,32 +239,30 @@ function App() {
             }
           }).filter((item) => item != undefined);
           return (
-            <>
-              <Grid item xs={12} sm={10} md={8} lg={6} xl={3}>
-                <Grid sx={{ '@media (min-width: 1024px)': { maxHeight: 100 } }}>
-                  <CourseDropdown
-                    courses={selectedCourses}
-                    key={item}
-                    id={item}
-                    onChangeHandler={setSelectedCourses}
-                    options={options}
-                    setRecentlyChangedCourse={setRecentlyChangedCourse}
-                  />
-                  <Grid item container direction="row">
-                    {allSections[item-1] && allSections[item-1].map((section, index) => (
-                      <Section
-                        key={index}
-                        section={section}
-                        selected={selectAllSections}
-                        selectedSections={selectedSections}
-                        handleChange={setSelectedSections}
-                        index={item-1}
-                      />
-                    ))}
-                  </Grid>
+            <Grid item xs={12} sm={10} md={8} lg={6} xl={3} key={id}>
+              <Grid sx={{ '@media (min-width: 1024px)': { maxHeight: 100 } }}>
+                <CourseDropdown
+                  courses={selectedCourses}
+                  key={item}
+                  id={item}
+                  onChangeHandler={setSelectedCourses}
+                  options={options}
+                  setRecentlyChangedCourse={setRecentlyChangedCourse}
+                />
+                <Grid item container direction="row">
+                  {allSections[item - 1] && allSections[item - 1].map((section, i) => (
+                    <Section
+                      key={i}
+                      section={section}
+                      selected={selectAllSections}
+                      selectedSections={selectedSections}
+                      handleChange={setSelectedSections}
+                      index={item - 1}
+                    />
+                  ))}
                 </Grid>
               </Grid>
-            </>
+            </Grid>
           )
         })}
       </Grid>
@@ -270,8 +271,8 @@ function App() {
       </Grid>
       <Grid container justifyContent="center" alignItems="center" sx={{ marginTop: 3 }}>
         {error && <Typography sx={{ marginTop: 3, color: "red" }}>{error}</Typography>}
-        {generatedTables.slice(0, generatedTables.length/selectedCourses.length).map((table) => (
-          <Grid container sx={{ marginTop: 3, marginBottom: 3 }}>
+        {generatedTables.slice(0, generatedTables.length / selectedCourses.length).map((table, index) => (
+          <Grid container sx={{ marginTop: 3, marginBottom: 3 }} key={index}>
             <GeneratedTimetable state={table} />
           </Grid>
         ))}
