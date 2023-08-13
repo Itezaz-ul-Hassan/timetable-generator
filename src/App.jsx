@@ -27,6 +27,7 @@ function App() {
   const [generatedTables, setGeneratedTables] = useState([]);
   const [recentlyChangedCourse, setRecentlyChangedCourse] = useState('');
   const [selectAllSections, setSelectAllSections] = useState(true);
+  const [buttonClicked, setButtonClicked] = useState(false);
 
   const addSections = useCallback((courseName) => {
     let prev = '';
@@ -58,6 +59,12 @@ function App() {
       addSections(recentlyChangedCourse);
     }
   }, [recentlyChangedCourse, addSections]);
+
+  useEffect(() => {
+    if(buttonClicked && generatedTables.slice(0, generatedTables.length / selectedCourses.length).length === 0) {
+      setError("No Suitable Timetable found");
+    }
+  }, [setError, generatedTables, selectedCourses, buttonClicked]);
 
   function SameCourses(c1, c2) {
     return c1.includes(c2) || c2.includes(c1);
@@ -267,14 +274,24 @@ function App() {
         })}
       </Grid>
       <Grid container justifyContent="center" alignItems="center" sx={{ marginTop: 20 }}>
-        <TimetableGenerator selectedTime={selectedTime} handleChange={setSelectedTime} onSubmit={generateTable} />
+        <TimetableGenerator
+          selectedTime={selectedTime}
+          handleChange={setSelectedTime}
+          onSubmit={generateTable}
+          setButtonClicked={setButtonClicked}
+        />
       </Grid>
       <Grid container justifyContent="center" alignItems="center" sx={{ marginTop: 3 }}>
-        {error && <Typography sx={{ marginTop: 3, color: "red" }}>{error}</Typography>}
+        {error
+          ? <Typography variant="h6" sx={{ color: "red" }}>{error}</Typography>
+          : buttonClicked && <Typography variant="h6">Timetable(s) generated successfully!</Typography>
+        }
         {generatedTables.slice(0, generatedTables.length / selectedCourses.length).map((table, index) => (
-          <Grid container sx={{ marginTop: 3, marginBottom: 3 }} key={index}>
-            <GeneratedTimetable state={table} />
-          </Grid>
+          <>
+            <Grid container sx={{ marginTop: 3, marginBottom: 3 }} key={index}>
+              <GeneratedTimetable state={table} />
+            </Grid>
+          </>
         ))}
       </Grid>
     </Box>

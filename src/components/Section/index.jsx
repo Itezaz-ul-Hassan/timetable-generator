@@ -15,9 +15,9 @@ const Section = ({ section, selected, selectedSections, index, handleChange }) =
     if(event.target.checked) {
       newData[index].push(event.target.name);
     } else {
-      const index = newData[index].indexOf(event.target.name);
-      if (index > -1) {
-        newData[index].splice(index, 1);
+      const location = newData[index].indexOf(event.target.name);
+      if (location > -1) {
+        newData[index].splice(location, 1);
       }
     }
     handleChange([...newData]);
