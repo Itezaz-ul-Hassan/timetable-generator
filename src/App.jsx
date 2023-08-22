@@ -232,6 +232,7 @@ function App() {
       <Grid
         container
         spacing={{ xs: 2, md: 12 }}
+        rowSpacing={22}
         direction="row"
         justifyContent="space-evenly"
         alignItems="center"
