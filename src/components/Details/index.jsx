@@ -18,8 +18,8 @@ Details.propTypes = {
 };
 
 Details.defaultProps = {
-  version: '1.6',
-  semester: 'Spring 2023',
+  version: '1.2',
+  semester: 'Fall 2023',
 };
 
 export default Details;
